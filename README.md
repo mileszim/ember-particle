@@ -1,6 +1,4 @@
-# ember-particle #
-
-Master Branch: [![Build Status](https://travis-ci.org/mileszim/ember-particle.svg?branch=master)](https://travis-ci.org/mileszim/ember-particle)
+# ember-particle [![Build Status](https://travis-ci.org/mileszim/ember-particle.svg?branch=master)](https://travis-ci.org/mileszim/ember-particle) #
 
 Ember service for the [https://particle.io/](Particle) API.
 
@@ -12,69 +10,67 @@ Ember service for the [https://particle.io/](Particle) API.
 
 1. `$ ember install ember-particle`
 2. When you need to call a function, be sure you are signed in:
-    ```javascript
-    export default Controller.extend({
-      particle: Ember.inject.service('ember-particle'),
+```javascript
+export default Controller.extend({
+  particle: Ember.inject.service('ember-particle'),
 
-      actions: {
-        loginToParticle(username, password) {
-          this.get('particle')
-            .login(username, password)
-            .then((success) => {
-              alert('you logged into particle! huzzah!');
-            })
-            .catch((error) => {
-              alert('Something went terribly wrong', error);
-            });
-        }
-      }
-    });
-    ```
+  actions: {
+    loginToParticle(username, password) {
+      this.get('particle')
+        .login(username, password)
+        .then((success) => {
+          alert('you logged into particle! huzzah!');
+        })
+        .catch((error) => {
+          alert('Something went terribly wrong', error);
+        });
+    }
+  }
+});
+```
 
 ### Functions ###
 
-* [#Authentication](Authentication)
-  * `[#login](login(username, password))`
-* [#DeviceInfo](Device Information)
-  * `[#listDevices](listDevices())`
-  * `[#getDevice](getDevice(deviceId))`
-* [#Interaction](Interaction with Device)
-  * `[#callFunction](callFunction(deviceId, name, argument))`
-  * `[#getVariable](getVariable(deviceId, name))`
-  * `[#signalDevice](signalDevice(deviceId))`
-* [#Administration](Administration)
-  * `[#claimDevice](claimDevice(deviceId))`
-  * `[#removeDevice](removeDevice(deviceId))`
-  * `[#renameDevice](renameDevice(deviceId, name))`
-  * `[#flashDevice](flashDevice(deviceId, files))`
-  * `[#sendPublicKey](sendPublicKey(deviceId, key))`
+* [Authentication](#authentication)
+  * [`login(username, password)`](#login)
+* [Device Info](#deviceInfo)
+  * [`listDevices()`](#listDevices)
+  * [`getDevice(deviceId)`](#getDevice)
+* [Interaction with Device](#interaction)
+  * [`callFunction(deviceId, name, argument)`](#callFunction)
+  * [`getVariable(deviceId, name)`](#getVariable)
+  * [`signalDevice(deviceId)`](#signalDevice)
+* [Administration`](#administration)
+  * [`claimDevice(deviceId)`](#claimDevice)
+  * [`removeDevice(deviceId)`](#removeDevice)
+  * [`renameDevice(deviceId, name)`](#renameDevice)
+  * [`flashDevice(deviceId, files)`](#flashDevice)
+  * [`sendPublicKey(deviceId, key)`](#sendPublicKey)
 
 
-#### Authentication ####
+#### <a id="authentication"></a> Authentication ####
 
-##### login(username, password) ####
+##### <a id="login"></a> *login(username, password)* ####
 
 Login a user with a username and password:
-    ```javascript
-    export default Controller.extend({
-      particle: Ember.inject.service('ember-particle'),
+```javascript
+export default Controller.extend({
+  particle: Ember.inject.service('ember-particle'),
 
-      actions: {
-        loginToParticle(username, password) {
-          this.get('particle')
-            .login(username, password)
-            .then((success) => {
-              alert('you logged into particle! huzzah!');
-            })
-            .catch((error) => {
-              alert('Something went terribly wrong', error);
-            });
-        }
-      }
-    });
-    ```
-
-
+  actions: {
+    loginToParticle(username, password) {
+      this.get('particle')
+        .login(username, password)
+        .then((success) => {
+          alert('you logged into particle! huzzah!');
+        })
+        .catch((error) => {
+          alert('Something went terribly wrong', error);
+        });
+    }
+  }
+});
+```
 
 
 # Contributing #
