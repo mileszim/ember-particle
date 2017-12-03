@@ -1,6 +1,6 @@
 {
   "name": "ember-particle",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Ember service for the Particle API",
   "keywords": [
     "ember-addon",
@@ -13,7 +13,7 @@
     "doc": "doc",
     "test": "tests"
   },
-  "repository": "",
+  "repository": "https://github.com/mileszim/ember-particle",
   "scripts": {
     "build": "ember build",
     "start": "ember server",
