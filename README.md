@@ -40,7 +40,7 @@ export default Controller.extend({
   * [`callFunction(deviceId, name, argument)`](#callFunction)
   * [`getVariable(deviceId, name)`](#getVariable)
   * [`signalDevice(deviceId)`](#signalDevice)
-* [Administration`](#administration)
+* [Administration](#administration)
   * [`claimDevice(deviceId)`](#claimDevice)
   * [`removeDevice(deviceId)`](#removeDevice)
   * [`renameDevice(deviceId, name)`](#renameDevice)
@@ -71,6 +71,32 @@ export default Controller.extend({
   }
 });
 ```
+
+
+#### <a id="deviceInfo"></a> Device Info ####
+
+##### <a id="listDevices"></a> *listDevices()* ####
+
+List devices for a user
+```javascript
+export default Controller.extend({
+  particle: Ember.inject.service('ember-particle'),
+  devices: this.get('particle').listDevices()
+});
+```
+
+##### <a id="getDevice"></a> *getDevice(deviceId)* ####
+
+Gets all attributes for a device
+```javascript
+export default Controller.extend({
+  particle: Ember.inject.service('ember-particle'),
+  device: this.get('particle').getDevice('asdf1234')
+});
+```
+
+
+#### <a id="interaction"></a> Interaction ####
 
 
 # Contributing #
