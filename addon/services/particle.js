@@ -1,5 +1,5 @@
 import Service from '@ember/service';
-import Logger from '@ember/logger';
+import Logger from '@ember/application';
 import Particle from 'particle-api-js';
 
 export default Service.extend({
@@ -8,10 +8,8 @@ export default Service.extend({
     this.set('particle', new Particle());
   },
 
-
   particle: null,
   token: null,
-
 
   /**
    * login

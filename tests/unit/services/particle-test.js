@@ -1,22 +1,27 @@
-import { moduleFor, test } from 'ember-qunit';
+import { moduleFor } from 'ember-qunit';
+import test from 'ember-sinon-qunit/test-support/test';
 import ParticleMock from '../../helpers/particle-mock';
 
 moduleFor('service:particle', 'Unit | Service | particle', {
-  // Specify the other units that are required for this test.
-  // needs: ['service:foo']
+  unit: true
 });
 
-
-// Initialize ParticleMock
-const particle = new ParticleMock();
+let particle = new ParticleMock();
 
 // Login tests
 test('it fails if username or password missing or empty', function(assert) {
   let service = this.subject();
-  assert.false(service.login(''));
+  let spy = this.spy(service);
+  let mock = this.mock(particle);
+  mock.expects('login').once().throws();
+  service.login('');
+  mock.verify();
+  assert(spy.calledOnce);
 });
 
 test('it succeeds because bob took us to victory', function(assert) {
   let service = this.subject();
-  assert.false(service.login('bob@particle.io', 'asdf1234'));
-})
+  let stub = this.stub(service, 'login');
+  service.login('bob@particle.io', 'asdf1234');
+  assert.ok(stub.calledOnce);
+});
