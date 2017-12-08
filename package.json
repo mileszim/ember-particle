@@ -1,6 +1,6 @@
 {
   "name": "ember-particle",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Ember service for the Particle API",
   "keywords": [
     "ember-addon",
@@ -20,7 +20,8 @@
     "test": "ember try:each"
   },
   "dependencies": {
-    "ember-cli-babel": "^6.6.0"
+    "ember-cli-babel": "^6.6.0",
+    "particle-api-js": "^7.0.1"
   },
   "devDependencies": {
     "broccoli-asset-rev": "^2.4.5",

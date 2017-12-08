@@ -2,10 +2,88 @@ import Service from '@ember/service';
 import Logger from '@ember/application';
 import Particle from 'particle-api-js';
 
+const METHODS = [
+  'login',
+  'loginAsClientOwner',
+  'createUser',
+  'verifyUser',
+  'resetPassword',
+  'deleteAccessToken',
+  'deleteCurrentAccessToken',
+  'listAccessTokens',
+  'trackingIdentity',
+  'listDevices',
+  'getDevice',
+  'claimDevice',
+  'addDeviceToProduct',
+  'removeDevice',
+  'removeDeviceOwner',
+  'renameDevice',
+  'signalDevice',
+  'setDeviceNotes',
+  'markAsDevelopmentDevice',
+  'lockDeviceProductFirmware',
+  'unlockDeviceProductFirmware',
+  'updateDevice',
+  'provisionDevice',
+  'getClaimCode',
+  'getVariable',
+  'flashDevice',
+  'flashTinker',
+  'compileCode',
+  'downloadFirmwareBinary',
+  'sendPublicKey',
+  'callFunction',
+  'getEventStream',
+  'publishEvent',
+  'createWebhook',
+  'deleteWebhook',
+  'listWebhooks',
+  'createIntegration',
+  'editIntegration',
+  'deleteIntegration',
+  'listIntegrations',
+  'getUserInfo',
+  'setUserInfo',
+  'listSIMs',
+  'getSIMDataUsage',
+  'getFleetDataUsage',
+  'activateSIM',
+  'deactivateSIM',
+  'reactivateSIM',
+  'updateSIM',
+  'removeSIM',
+  'listBuildTargets',
+  'listLibraries',
+  'getLibrary',
+  'getLibraryVersions',
+  'contributeLibrary',
+  'publishLibrary',
+  'deleteLibrary',
+  'downloadFile',
+  'listOAuthClients',
+  'createOAuthClient',
+  'updateOAuthClient',
+  'deleteOAuthClient',
+  'listProducts',
+  'getProduct',
+  'listProductFirmware',
+  'uploadProductFirmware',
+  'getProductFirmware',
+  'updateProductFirmware',
+  'downloadProductFirmware',
+  'releaseProductFirmware',
+  'listTeamMembers',
+  'inviteTeamMember',
+  'removeTeamMember',
+  'lookupSerialNumber'
+];
+
 export default Service.extend({
   init() {
     this._super(...arguments);
     this.set('particle', new Particle());
+    METHODS.map((methodName) => { this.set(methodName, this.apiCall); });
   },
 
   particle: null,
@@ -41,7 +119,13 @@ export default Service.extend({
     }
   },
 
-  throwGenericError(error = "yo dawg") {
+  _checkForValidMethod(methodName, /* methodArgs = {} */) {
+    if (typeof(methodName) !== 'string') { throw new Error('methodName parameter must be a string'); }
+    if (!METHODS[methodName]) { throw new Error(`method '${methodName}' does not exist in particle.io JS SDK`); }
+    return true;
+  },
+
+  _throwGenericError(error = "yo dawg") {
     throw new Error("There was an error:" + error);
   },
 
@@ -52,172 +136,15 @@ export default Service.extend({
    * @param {Object} methodArgs - Arguments for method
    * @return {Promise} Response of function call.
    */
-  apiCall(methodName = '', methodArgs = {}) {
-    this.haltIfNotLoggedIn();
-    const { particle, auth } = this.getProperties('particle', 'token');
-    const method = this.[methodName];
-    methodArgs['auth'] = auth;
+  _apiCall(methodName = '', methodArgs = {}) {
+    this._haltIfNotLoggedIn();
+    this._checkForValidMethod(methodName, methodArgs);
+    const { particle, token } = this.getProperties('particle', 'token');
+    const method = particle[methodName];
+    methodArgs['auth'] = token;
     return particle
       .method(methodArgs)
       .then(data => data)
       .catch(this.throwGenericError);
-  },
-
-
-  /**
-   * listDevices
-   *  - List devices for a user
-   * @returns {ArrayPromise} - A list of the devices
-   */
-  listDevices() {
-    return this.apiCall('listDevices');
-  },
-
-  /**
-   * callFunction
-   *  - Call a function in device
-   *  - The function needs to be defined in the firmware uploaded to the device and registered to the Particle cloud.
-   *  - You pass along the name of the function and the params.
-   *  - If the function call succeeds, data.return_value is the value returned by the function call on the Particle device.
-   * @param {String} deviceId - The device ID
-   * @param {String} name - Name of the function being called
-   * @param {String} argument - The argument passed to the function being called (optional)
-   * @returns {Object} Data returned by the particle function call
-   */
-  callFunction(deviceId = null, name = null, argument = null) {
-    const options = { deviceId, name, argument };
-    return this.apiCall('callFunction', options);
-  },
-
-  /**
-   * claimDevice
-   *  - Claims device and adds it to the user account
-   * @param {String} deviceId - The device ID
-   * @returns {Object} Data returned by the particle function call
-   */
-  claimDevice(deviceId = null) {
-    const options = { deviceId };
-    return this.apiCall('claimDevice', options);
-  },
-
-  /**
-   * flashDevice
-   *  - Flash firmware to device
-   * @param {String} deviceId - The device ID
-   * @param {Object} files - Reference structure here https://docs.particle.io/reference/javascript/#flashdevice
-   * @returns {Object} Data returned by the particle function call
-   */
-  flashDevice(deviceId = null, files = {}) {
-    const options = { deviceId, files };
-    return this.apiCall('flashDevice', options);
-  },
-
-  /**
-   * getDevice
-   *  - Gets all attributes for the device
-   * @param {String} deviceId - The device ID
-   * @returns {Object} Data returned by the particle function call
-   */
-  getDevice(deviceId = null) {
-    const options = { deviceId };
-    return this.apiCall('getDevice', options);
-  },
-
-  /**
-   * getVariable
-   *  - Gets a variable value for the device
-   *  - The variable needs to be defined in your device's code
-   *  - If getting the variable succeeds, `data.result` is the value of the variable on the Particle device
-   * @param {String} deviceId - The device ID
-   * @param {String} name - Name of variable to look up
-   * @returns {Object} Data returned by the particle function call
-   */
-  getVariable(deviceId = null, name = null) {
-    const options = { deviceId, name };
-    return this.apiCall('getVariable', options);
-  },
-
-  /**
-   * removeDevice
-   *  - Removes device from the user account
-   * @param {String} deviceId - The device ID
-   * @returns {Object} Data returned by the particle function call
-   */
-  removeDevice(deviceId = null) {
-    const options = { deviceId };
-    return this.apiCall('removeDevice', options);
-  },
-
-  /**
-   * renameDevice
-   *  - Renames device for the user account
-   * @param {String} deviceId - The device ID
-   * @param {String} name - The new name you would like to call the device
-   * @returns {Object} Data returned by the particle function call
-   */
-  renameDevice(deviceId = null, name = null) {
-    const options = { deviceId, name };
-    return this.apiCall('renameDevice', options);
-  },
-
-  /**
-   * signalDevice
-   *  - Send a signal to the device to shout rainbows
-   *  - Send a signal to the device to stop shouting rainbows
-   * @param {String} deviceId - The device ID
-   * @returns {Object} Data returned by the particle function call
-   */
-  signalDevice(deviceId = null) {
-    const options = { deviceId, signal: true };
-    return this.apiCall('signalDevice', options);
-  },
-
-  /**
-   * sendPublicKey
-   *  - Send public key for a device to the cloud
-   * @param {String} deviceId - The device ID
-   * @param {String} key - The public key to be sent
-   * @returns {Object} Data returned by the particle function call
-   */
-  sendPublicKey(deviceId = null, key) {
-    const options = { deviceId, key };
-    return this.apiCall('sendPublicKey', options);
-  },
-
-
-  /**
-   * getEventStream
-   *  - Get event listener to an stream in the Particle cloud
-   * @param {String} deviceId - The device ID of events to listen to (optional).
-   * @param {String} name - The name of the event to listen to (optional).
-   * @returns {EventListener} An EventListener object with stream data.
-   */
-  getEventStream(deviceId = null, name = null) {
-    const options = { deviceId, name };
-    return this.apiCall('getEventStream', options);
-  },
-
-  /**
-   * publishEvent
-   *  - Register an event stream in the Particle cloud.
-   * @param {String} name - Name of event being sent
-   * @param {Object} data - Reference object structure here https://docs.particle.io/reference/javascript/#geteventstream
-   * @returns {Object} Data returned by particle call.
-  */
-  publishEvent(name = null, data = {}) {
-    const options = { name, data };
-    return this.apiCall('publishEvent', options);
-  },
-
-
-  /**
-   * compileCode
-   *  - Compiles files in the Particle cloud
-   * @param {Object} files - Reference structure here https://docs.particle.io/reference/javascript/#compilecode
-   * @returns {Object} Data returned by particle call.
-   */
-  compileCode(files = {}) {
-    const options = { files };
-    return this.apiCall('compileCode', options);
-  },
+  }
 });
