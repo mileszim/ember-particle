@@ -18,7 +18,7 @@ export default Service.extend({
    * @param {String} passowrd - Yo mama's password so fat we had to use 64 bits to store it
    * @returns {Boolean} - True: success, False: error!
    */
-  login(username, password) {
+  login(username = null, password = null) {
     return this.get('particle')
       .login({ username, password })
       .then((data) => {
@@ -41,9 +41,28 @@ export default Service.extend({
     }
   },
 
-  throwGenericError(error) {
+  throwGenericError(error = "yo dawg") {
     throw new Error("There was an error:" + error);
   },
+
+  /**
+   * apiCall
+   *  - Generic API call function
+   * @param {String} methodName - Name of method to be called
+   * @param {Object} methodArgs - Arguments for method
+   * @return {Promise} Response of function call.
+   */
+  apiCall(methodName = '', methodArgs = {}) {
+    this.haltIfNotLoggedIn();
+    const { particle, auth } = this.getProperties('particle', 'token');
+    const method = this.[methodName];
+    methodArgs['auth'] = auth;
+    return particle
+      .method(methodArgs)
+      .then(data => data)
+      .catch(this.throwGenericError);
+  },
+
 
   /**
    * listDevices
@@ -51,12 +70,7 @@ export default Service.extend({
    * @returns {ArrayPromise} - A list of the devices
    */
   listDevices() {
-    this.haltIfNotLoggedIn();
-    const { particle, auth } = this.getProperties('particle', 'token');
-    return particle
-      .listDevices({ auth })
-      .then(devices => devices)
-      .catch(this.throwGenericError);
+    return this.apiCall('listDevices');
   },
 
   /**
@@ -70,13 +84,9 @@ export default Service.extend({
    * @param {String} argument - The argument passed to the function being called (optional)
    * @returns {Object} Data returned by the particle function call
    */
-  callFunction(deviceId, name, argument) {
-    this.haltIfNotLoggedIn();
-    const { particle, auth } = this.getProperties('particle', 'token');
-    return particle
-      .callFunction({ deviceId, auth, name, argument })
-      .then(data => data)
-      .catch(this.throwGenericError);
+  callFunction(deviceId = null, name = null, argument = null) {
+    const options = { deviceId, name, argument };
+    return this.apiCall('callFunction', options);
   },
 
   /**
@@ -85,28 +95,21 @@ export default Service.extend({
    * @param {String} deviceId - The device ID
    * @returns {Object} Data returned by the particle function call
    */
-  claimDevice(deviceId) {
-    this.haltIfNotLoggedIn();
-    const { particle, auth } = this.getProperties('particle', 'token');
-    return particle
-      .claimDevice({ deviceId, auth })
-      .then(data => data)
-      .catch(this.throwGenericError);
+  claimDevice(deviceId = null) {
+    const options = { deviceId };
+    return this.apiCall('claimDevice', options);
   },
 
   /**
    * flashDevice
    *  - Flash firmware to device
    * @param {String} deviceId - The device ID
+   * @param {Object} files - Reference structure here https://docs.particle.io/reference/javascript/#flashdevice
    * @returns {Object} Data returned by the particle function call
    */
-  flashDevice(deviceId, files) {
-    this.haltIfNotLoggedIn();
-    const { particle, auth } = this.getProperties('particle', 'token');
-    return particle
-      .flashDevice({ deviceId, auth, files })
-      .then(data => data)
-      .catch(this.throwGenericError);
+  flashDevice(deviceId = null, files = {}) {
+    const options = { deviceId, files };
+    return this.apiCall('flashDevice', options);
   },
 
   /**
@@ -115,13 +118,9 @@ export default Service.extend({
    * @param {String} deviceId - The device ID
    * @returns {Object} Data returned by the particle function call
    */
-  getDevice(deviceId) {
-    this.haltIfNotLoggedIn();
-    const { particle, auth } = this.getProperties('particle', 'token');
-    return particle
-      .getDevice({ deviceId, auth })
-      .then(data => data)
-      .catch(this.throwGenericError);
+  getDevice(deviceId = null) {
+    const options = { deviceId };
+    return this.apiCall('getDevice', options);
   },
 
   /**
@@ -133,13 +132,9 @@ export default Service.extend({
    * @param {String} name - Name of variable to look up
    * @returns {Object} Data returned by the particle function call
    */
-  getVariable(deviceId, name) {
-    this.haltIfNotLoggedIn();
-    const { particle, auth } = this.getProperties('particle', 'token');
-    return particle
-      .getDevice({ deviceId, auth, name })
-      .then(data => data)
-      .catch(this.throwGenericError);
+  getVariable(deviceId = null, name = null) {
+    const options = { deviceId, name };
+    return this.apiCall('getVariable', options);
   },
 
   /**
@@ -148,13 +143,9 @@ export default Service.extend({
    * @param {String} deviceId - The device ID
    * @returns {Object} Data returned by the particle function call
    */
-  removeDevice(deviceId) {
-    this.haltIfNotLoggedIn();
-    const { particle, auth } = this.getProperties('particle', 'token');
-    return particle
-      .getDevice({ deviceId, auth })
-      .then(data => data)
-      .catch(this.throwGenericError);
+  removeDevice(deviceId = null) {
+    const options = { deviceId };
+    return this.apiCall('removeDevice', options);
   },
 
   /**
@@ -164,13 +155,9 @@ export default Service.extend({
    * @param {String} name - The new name you would like to call the device
    * @returns {Object} Data returned by the particle function call
    */
-  renameDevice(deviceId, name) {
-    this.haltIfNotLoggedIn();
-    const { particle, auth } = this.getProperties('particle', 'token');
-    return particle
-      .getDevice({ deviceId, auth, name })
-      .then(data => data)
-      .catch(this.throwGenericError);
+  renameDevice(deviceId = null, name = null) {
+    const options = { deviceId, name };
+    return this.apiCall('renameDevice', options);
   },
 
   /**
@@ -180,13 +167,9 @@ export default Service.extend({
    * @param {String} deviceId - The device ID
    * @returns {Object} Data returned by the particle function call
    */
-  signalDevice(deviceId) {
-    this.haltIfNotLoggedIn();
-    const { particle, auth } = this.getProperties('particle', 'token');
-    return particle
-      .signalDevice({ deviceId, auth, signal: true })
-      .then(data => data)
-      .catch(this.throwGenericError);
+  signalDevice(deviceId = null) {
+    const options = { deviceId, signal: true };
+    return this.apiCall('signalDevice', options);
   },
 
   /**
@@ -196,12 +179,57 @@ export default Service.extend({
    * @param {String} key - The public key to be sent
    * @returns {Object} Data returned by the particle function call
    */
-  sendPublicKey(deviceId, key) {
-    this.haltIfNotLoggedIn();
-    const { particle, auth } = this.getProperties('particle', 'token');
-    return particle
-      .sendPublicKey({ deviceId, auth, key })
-      .then(data => data)
-      .catch(this.throwGenericError);
+  sendPublicKey(deviceId = null, key) {
+    const options = { deviceId, key };
+    return this.apiCall('sendPublicKey', options);
   },
+
+
+  /**
+   * getEventStream
+   *  - Get event listener to an stream in the Particle cloud
+   * @param {String} deviceId - The device ID of events to listen to (optional).
+   * @param {String} name - The name of the event to listen to (optional).
+   * @returns {EventListener} An EventListener object with stream data.
+   */
+  getEventStream(deviceId = null, name = null) {
+    const options = { deviceId, name };
+    return this.apiCall('getEventStream', options);
+  },
+
+  /**
+   * publishEvent
+   *  - Register an event stream in the Particle cloud.
+   * @param {String} name - Name of event being sent
+   * @param {Object} data - Reference object structure here https://docs.particle.io/reference/javascript/#geteventstream
+   * @returns {Object} Data returned by particle call.
+  */
+  publishEvent(name = null, data = {}) {
+    const options = { name, data };
+    return this.apiCall('publishEvent', options);
+  },
+
+
+  /**
+   * compileCode
+   *  - Compiles files in the Particle cloud
+   * @param {Object} files - Reference structure here https://docs.particle.io/reference/javascript/#compilecode
+   * @returns {Object} Data returned by particle call.
+   */
+  compileCode(files = {}) {
+    const options = { files };
+    return this.apiCall('compileCode', options);
+  },
+
+  /**
+   * flashDevice
+   *  - Flash firmware to a device
+   * @param {String} deviceId - The device ID
+   * @param {Object} files
+   * @returns {Object} Data returned by particle call.
+   */
+  flashDevice(deviceId = null, files = {}) {
+    const options = { deviceId, files };
+    return this.apiCall('flashDevice', options);
+  }
 });
