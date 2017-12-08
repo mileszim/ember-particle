@@ -220,16 +220,4 @@ export default Service.extend({
     const options = { files };
     return this.apiCall('compileCode', options);
   },
-
-  /**
-   * flashDevice
-   *  - Flash firmware to a device
-   * @param {String} deviceId - The device ID
-   * @param {Object} files
-   * @returns {Object} Data returned by particle call.
-   */
-  flashDevice(deviceId = null, files = {}) {
-    const options = { deviceId, files };
-    return this.apiCall('flashDevice', options);
-  }
 });
