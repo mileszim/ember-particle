@@ -1,27 +1,20 @@
-import { moduleFor } from 'ember-qunit';
-import test from 'ember-sinon-qunit/test-support/test';
-import ParticleMock from '../../helpers/particle-mock';
+import { moduleFor, test } from 'ember-qunit';
+import PARTICLE_METHODS from 'ember-particle/utils/particle-methods';
 
 moduleFor('service:particle', 'Unit | Service | particle', {
-  unit: true
 });
 
-let particle = new ParticleMock();
-
-// Login tests
-test('it fails if username or password missing or empty', function(assert) {
+test('it responds to the known particle SDK methods', function(assert) {
   let service = this.subject();
-  let spy = this.spy(service);
-  let mock = this.mock(particle);
-  mock.expects('login').once().throws();
-  service.login('');
-  mock.verify();
-  assert(spy.calledOnce);
+  PARTICLE_METHODS.forEach((method) => {
+    assert.ok(service.hasOwnProperty(method));
+  });
 });
 
-test('it succeeds because bob took us to victory', function(assert) {
-  let service = this.subject();
-  let stub = this.stub(service, 'login');
-  service.login('bob@particle.io', 'asdf1234');
-  assert.ok(stub.calledOnce);
+test('it can check if logged in if token exists', function(assert) {
+  let service = this.subject({ token: '1234' });
+  assert.ok(service.loggedIn(), "user is logged in to particle API");
+
+  service.set('token', null);
+  assert.notOk(service.loggedIn(), "user is NOT logged into particle API");
 });
