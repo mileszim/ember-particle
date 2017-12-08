@@ -3,6 +3,6 @@ module.exports = {
   description: 'Ember service for the Particle API',
 
   afterInstall() {
-    return this.addPackageToProject('particle-api-js');
+    return this.addBowerPackageToProject('particle-api-js');
   }
 };
