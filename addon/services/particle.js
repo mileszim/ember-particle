@@ -1,16 +1,16 @@
 import Service from '@ember/service';
 import Logger from '@ember/application';
 import Particle from 'particle-api-js';
-import PARTICLE_METHODS from './-private/-particle-methods';
+import PARTICLE_METHODS from 'ember-particle/utils/particle-methods';
 
 export default Service.extend({
   init() {
     this._super(...arguments);
-    this.set('particle', new Particle());
+    this.set('particleInstance', new Particle());
     PARTICLE_METHODS.map((methodName) => { this.set(methodName, this._apiCall); });
   },
 
-  particle: null,
+  particleInstance: null,
   token: null,
 
   /**
@@ -21,7 +21,7 @@ export default Service.extend({
    * @returns {Boolean} - True: success, False: error!
    */
   login(username = null, password = null) {
-    return this.get('particle')
+    return this.get('particleInstance')
       .login({ username, password })
       .then((data) => {
         this.set('token', data.body.access_token);
@@ -64,10 +64,10 @@ export default Service.extend({
   _apiCall(methodName = '', methodArgs = {}) {
     this._haltIfNotLoggedIn();
     this._checkForValidMethod(methodName, methodArgs);
-    const { particle, token } = this.getProperties('particle', 'token');
-    const method = particle[methodName];
+    const { particleInstance, token } = this.getProperties('particleInstance', 'token');
+    const method = particleInstance[methodName];
     methodArgs['auth'] = token;
-    return particle
+    return particleInstance
       .method(methodArgs)
       .then(data => data)
       .catch(this.throwGenericError);
