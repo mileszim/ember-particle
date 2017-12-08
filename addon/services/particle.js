@@ -1,6 +1,5 @@
 import Service from '@ember/service';
 import Logger from '@ember/application';
-import Particle from 'particle-api-js';
 import PARTICLE_METHODS from 'ember-particle/utils/particle-methods';
 
 export default Service.extend({
