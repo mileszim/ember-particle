@@ -1,89 +1,13 @@
 import Service from '@ember/service';
 import Logger from '@ember/application';
 import Particle from 'particle-api-js';
-
-const METHODS = [
-  'login',
-  'loginAsClientOwner',
-  'createUser',
-  'verifyUser',
-  'resetPassword',
-  'deleteAccessToken',
-  'deleteCurrentAccessToken',
-  'listAccessTokens',
-  'trackingIdentity',
-  'listDevices',
-  'getDevice',
-  'claimDevice',
-  'addDeviceToProduct',
-  'removeDevice',
-  'removeDeviceOwner',
-  'renameDevice',
-  'signalDevice',
-  'setDeviceNotes',
-  'markAsDevelopmentDevice',
-  'lockDeviceProductFirmware',
-  'unlockDeviceProductFirmware',
-  'updateDevice',
-  'provisionDevice',
-  'getClaimCode',
-  'getVariable',
-  'flashDevice',
-  'flashTinker',
-  'compileCode',
-  'downloadFirmwareBinary',
-  'sendPublicKey',
-  'callFunction',
-  'getEventStream',
-  'publishEvent',
-  'createWebhook',
-  'deleteWebhook',
-  'listWebhooks',
-  'createIntegration',
-  'editIntegration',
-  'deleteIntegration',
-  'listIntegrations',
-  'getUserInfo',
-  'setUserInfo',
-  'listSIMs',
-  'getSIMDataUsage',
-  'getFleetDataUsage',
-  'activateSIM',
-  'deactivateSIM',
-  'reactivateSIM',
-  'updateSIM',
-  'removeSIM',
-  'listBuildTargets',
-  'listLibraries',
-  'getLibrary',
-  'getLibraryVersions',
-  'contributeLibrary',
-  'publishLibrary',
-  'deleteLibrary',
-  'downloadFile',
-  'listOAuthClients',
-  'createOAuthClient',
-  'updateOAuthClient',
-  'deleteOAuthClient',
-  'listProducts',
-  'getProduct',
-  'listProductFirmware',
-  'uploadProductFirmware',
-  'getProductFirmware',
-  'updateProductFirmware',
-  'downloadProductFirmware',
-  'releaseProductFirmware',
-  'listTeamMembers',
-  'inviteTeamMember',
-  'removeTeamMember',
-  'lookupSerialNumber'
-];
+import PARTICLE_METHODS from './-private/-particle-methods';
 
 export default Service.extend({
   init() {
     this._super(...arguments);
     this.set('particle', new Particle());
-    METHODS.map((methodName) => { this.set(methodName, this.apiCall); });
+    PARTICLE_METHODS.map((methodName) => { this.set(methodName, this._apiCall); });
   },
 
   particle: null,
@@ -113,7 +37,7 @@ export default Service.extend({
     return !!this.get('token');
   },
 
-  haltIfNotLoggedIn() {
+  _haltIfNotLoggedIn() {
     if (!this.loggedIn()) {
       throw new Error("You must call `this.get('particle').login(username, password);` before using the service.");
     }
@@ -121,7 +45,7 @@ export default Service.extend({
 
   _checkForValidMethod(methodName, /* methodArgs = {} */) {
     if (typeof(methodName) !== 'string') { throw new Error('methodName parameter must be a string'); }
-    if (!METHODS[methodName]) { throw new Error(`method '${methodName}' does not exist in particle.io JS SDK`); }
+    if (!PARTICLE_METHODS[methodName]) { throw new Error(`method '${methodName}' does not exist in particle.io JS SDK`); }
     return true;
   },
 
@@ -134,8 +58,9 @@ export default Service.extend({
    *  - Generic API call function
    * @param {String} methodName - Name of method to be called
    * @param {Object} methodArgs - Arguments for method
-   * @return {Promise} Response of function call.
+   * @return {Promise} Response of function call
    */
+  /* eslint "no-unused-vars": "off" */
   _apiCall(methodName = '', methodArgs = {}) {
     this._haltIfNotLoggedIn();
     this._checkForValidMethod(methodName, methodArgs);
