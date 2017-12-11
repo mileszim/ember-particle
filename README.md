@@ -1,6 +1,6 @@
 # ember-particle [![Build Status](https://travis-ci.org/mileszim/ember-particle.svg?branch=master)](https://travis-ci.org/mileszim/ember-particle) #
 
-Ember service for the [https://particle.io/](Particle) API.
+Ember service for the [Particle](https://particle.io/) API.
 
 ## Usage ##
 
