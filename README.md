@@ -1,5 +1,5 @@
-ember-particle [![Build Status](https://travis-ci.org/mileszim/ember-particle.svg?branch=master)](https://travis-ci.org/mileszim/ember-particle)
-==============================================================================
+# ember-particle #
+[![Build Status](https://travis-ci.org/mileszim/ember-particle.svg?branch=master)](https://travis-ci.org/mileszim/ember-particle) [![npm version](https://badge.fury.io/js/ember-particle.svg)](https://badge.fury.io/js/ember-particle) [![Ember Observer Score](https://emberobserver.com/badges/ember-particle.svg)](https://emberobserver.com/addons/ember-particle)
 
 `ember-particle` is an addon for Ember.js providing an injectable service that acts as a wrapper around the [Particle](https://particle.io/) API.
 
@@ -14,39 +14,12 @@ ember install ember-particle
 Usage
 ------------------------------------------------------------------------------
 
-### Signing In ###
-
-When you need to call a function, be sure you are signed in:
-
-```javascript
-//...
-import { inject as service } from '@ember/service';
-
-export default Controller.extend({
-  particle: service('particle'),
-
-  actions: {
-    loginToParticle(username, password) {
-      this.get('particle')
-        .login(username, password)
-        .then((success) => {
-          alert('you logged into particle! huzzah!');
-        })
-        .catch((error) => {
-          alert('Something went terribly wrong', error);
-        });
-    }
-  }
-});
-```
-
-### API ###
-
 `ember-particle` enables all functions identical to their API as it is just a wrapper.
 
-**Documentation** in full is available at the particle website https://docs.particle.io/reference/javascript/
+#### API Documentation ####
+Complete API docs for all Particle.io methods are available at the JS SDK doc site https://docs.particle.io/reference/javascript/
 
-#### Select Examples ####
+### Examples ###
 
 ##### *login(username, password)* ####
 
