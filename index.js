@@ -1,10 +1,9 @@
-/* eslint-env node */
 'use strict';
 
 module.exports = {
-  name: 'ember-particle',
+  name: require('./package').name,
 
-  included(app) {
+  included() {
     this._super.included.apply(this, ...arguments);
     this.import('bower_components/particle-api-js/dist/particle.min.js');
   }

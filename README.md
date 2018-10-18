@@ -1,15 +1,25 @@
-# ember-particle [![Build Status](https://travis-ci.org/mileszim/ember-particle.svg?branch=master)](https://travis-ci.org/mileszim/ember-particle) #
+ember-particle [![Build Status](https://travis-ci.org/mileszim/ember-particle.svg?branch=master)](https://travis-ci.org/mileszim/ember-particle)
+==============================================================================
 
 Ember service for the [Particle](https://particle.io/) API.
 
-## Usage ##
-
 `ember-particle` is an addon for Ember.js providing an injectable service that acts as a wrapper around the Particle javascript API.
 
-### Install Addon ###
+Installation
+------------------------------------------------------------------------------
 
-1. `$ ember install ember-particle`
-2. When you need to call a function, be sure you are signed in:
+```
+ember install ember-particle
+```
+
+
+Usage
+------------------------------------------------------------------------------
+
+### Signing In ###
+
+When you need to call a function, be sure you are signed in:
+
 ```javascript
 export default Controller.extend({
   particle: Ember.inject.service('ember-particle'),
@@ -99,27 +109,37 @@ export default Controller.extend({
 #### <a id="interaction"></a> Interaction ####
 
 
-# Contributing #
+Contributing
+------------------------------------------------------------------------------
 
 I'm always happy to take on PRs. Here is how to get up and running:
 
 ## Installation ##
 
-* `git clone <repository-url>` this repository
+* `git clone https://github.com/mileszim/ember-particle` this repository
 * `cd ember-particle`
 * `yarn install`
 
 ## Running ##
 
+* `npm run lint:hbs`
+* `npm run lint:js`
+* `npm run lint:js -- --fix`
+
+### Running tests
+
+* `ember test` – Runs the test suite on the current Ember version
+* `ember test --server` – Runs the test suite in "watch mode"
+* `ember try:each` – Runs the test suite against multiple Ember versions
+
+### Running the dummy application
+
 * `ember serve`
-* Visit your app at [http://localhost:4200](http://localhost:4200).
+* Visit the dummy application at [http://localhost:4200](http://localhost:4200).
 
-## Running Tests ##
+For more information on using ember-cli, visit [https://ember-cli.com/](https://ember-cli.com/).
 
-* `yarn test` (Runs `ember try:each` to test your addon against multiple Ember versions)
-* `ember test`
-* `ember test --server`
+License
+------------------------------------------------------------------------------
 
-## Building ##
-
-* `ember build`
+This project is licensed under the [MIT License](LICENSE.md).
