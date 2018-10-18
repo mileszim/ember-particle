@@ -1,6 +1,6 @@
 {
   "name": "ember-particle",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "Ember service for the Particle API",
   "keywords": [
     "ember-addon",

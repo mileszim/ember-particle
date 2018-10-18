@@ -19,11 +19,11 @@ Usage
 When you need to call a function, be sure you are signed in:
 
 ```javascript
-import Controller from '@ember/Controller';
+//...
 import { inject as service } from '@ember/service';
 
 export default Controller.extend({
-  particle: service('ember-particle'),
+  particle: service('particle'),
 
   actions: {
     loginToParticle(username, password) {
@@ -40,33 +40,23 @@ export default Controller.extend({
 });
 ```
 
-### Functions ###
+### API ###
 
-* [Authentication](#authentication)
-  * [`login(username, password)`](#login)
-* [Device Info](#deviceInfo)
-  * [`listDevices()`](#listDevices)
-  * [`getDevice(deviceId)`](#getDevice)
-* [Interaction with Device](#interaction)
-  * [`callFunction(deviceId, name, argument)`](#callFunction)
-  * [`getVariable(deviceId, name)`](#getVariable)
-  * [`signalDevice(deviceId)`](#signalDevice)
-* [Administration](#administration)
-  * [`claimDevice(deviceId)`](#claimDevice)
-  * [`removeDevice(deviceId)`](#removeDevice)
-  * [`renameDevice(deviceId, name)`](#renameDevice)
-  * [`flashDevice(deviceId, files)`](#flashDevice)
-  * [`sendPublicKey(deviceId, key)`](#sendPublicKey)
+`ember-particle` enables all functions identical to their API as it is just a wrapper.
 
+**Documentation** in full is available at the particle website https://docs.particle.io/reference/javascript/
 
-#### <a id="authentication"></a> Authentication ####
+#### Select Examples ####
 
-##### <a id="login"></a> *login(username, password)* ####
+##### *login(username, password)* ####
 
 Login a user with a username and password:
 ```javascript
+//...
+import { inject as service } from '@ember/service';
+
 export default Controller.extend({
-  particle: Ember.inject.service('ember-particle'),
+  particle: service('particle'),
 
   actions: {
     loginToParticle(username, password) {
@@ -84,30 +74,33 @@ export default Controller.extend({
 ```
 
 
-#### <a id="deviceInfo"></a> Device Info ####
+#### Device Info ####
 
-##### <a id="listDevices"></a> *listDevices()* ####
+##### *listDevices()* ####
 
 List devices for a user
 ```javascript
+//...
+import { inject as service } from '@ember/service';
+
 export default Controller.extend({
-  particle: Ember.inject.service('ember-particle'),
+  particle: service('particle'),
   devices: this.get('particle').listDevices()
 });
 ```
 
-##### <a id="getDevice"></a> *getDevice(deviceId)* ####
+##### *getDevice(deviceId)* ####
 
 Gets all attributes for a device
 ```javascript
+//...
+import { inject as service } from '@ember/service';
+
 export default Controller.extend({
-  particle: Ember.inject.service('ember-particle'),
+  particle: service('particle'),
   device: this.get('particle').getDevice('asdf1234')
 });
 ```
-
-
-#### <a id="interaction"></a> Interaction ####
 
 
 Contributing
