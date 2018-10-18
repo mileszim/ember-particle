@@ -1,9 +1,7 @@
 ember-particle [![Build Status](https://travis-ci.org/mileszim/ember-particle.svg?branch=master)](https://travis-ci.org/mileszim/ember-particle)
 ==============================================================================
 
-Ember service for the [Particle](https://particle.io/) API.
-
-`ember-particle` is an addon for Ember.js providing an injectable service that acts as a wrapper around the Particle javascript API.
+`ember-particle` is an addon for Ember.js providing an injectable service that acts as a wrapper around the [Particle](https://particle.io/) API.
 
 Installation
 ------------------------------------------------------------------------------
@@ -21,8 +19,11 @@ Usage
 When you need to call a function, be sure you are signed in:
 
 ```javascript
+import Controller from '@ember/Controller';
+import { inject as service } from '@ember/service';
+
 export default Controller.extend({
-  particle: Ember.inject.service('ember-particle'),
+  particle: service('ember-particle'),
 
   actions: {
     loginToParticle(username, password) {

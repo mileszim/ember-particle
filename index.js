@@ -5,6 +5,6 @@ module.exports = {
 
   included() {
     this._super.included.apply(this, ...arguments);
-    this.import('bower_components/particle-api-js/dist/particle.min.js');
+    this.import('node_modules/particle-api-js/dist/particle.min.js');
   }
 };
