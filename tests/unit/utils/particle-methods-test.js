@@ -78,9 +78,9 @@ const PARTICLE_METHODS = [
   'lookupSerialNumber'
 ];
 
-module('Unit | Utility | particle methods');
-
-test('particle method arrays are equal', function(assert) {
-  let result = particleMethods;
-  assert.deepEqual(result, PARTICLE_METHODS, "particle method arrays are equal");
+module('Unit | Utility | particle methods', function() {
+  test('particle method arrays are equal', function(assert) {
+    let result = particleMethods;
+    assert.deepEqual(result, PARTICLE_METHODS, "particle method arrays are equal");
+  });
 });
