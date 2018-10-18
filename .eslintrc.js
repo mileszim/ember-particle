@@ -16,9 +16,6 @@ module.exports = {
   },
   rules: {
   },
-  globals: {
-    'Particle': true
-  },
   overrides: [
     // node files
     {

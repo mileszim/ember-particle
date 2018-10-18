@@ -6,7 +6,11 @@ module.exports = function(defaults) {
   let app = new EmberAddon(defaults, {});
 
   // Import particle for addon dev
-  app.import('node_modules/particle-api-js/dist/particle.min.js');
+  app.import('node_modules/particle-api-js/dist/particle.min.js', {
+    using: [
+      { transformation: 'amd', as: 'particle-api-js' }
+    ]
+  });
 
   return app.toTree();
 };

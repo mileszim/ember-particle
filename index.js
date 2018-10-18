@@ -5,6 +5,10 @@ module.exports = {
 
   included() {
     this._super.included.apply(this, ...arguments);
-    this.import('node_modules/particle-api-js/dist/particle.min.js');
+    this.import('node_modules/particle-api-js/dist/particle.min.js', {
+      using: [
+        { transformation: 'amd', as: 'particle-api-js' }
+      ]
+    });
   }
 };
